@@ -1477,74 +1477,144 @@
                 "Peter": { allies: ["Rylee", "Ario", "Kane"], rivals: ["Collin", "Sleeper", "Synthia"] }
             };
 
-            /* ═══ TARGET ROIs — directed pathway destinations per alter ═══ */
+            /* ═══ TARGET ROIs — from Neural Map.md activated networks ═══ */
             var TARGETS = {
-                "Ethan": ["Broca", "OFC", "ACC", "Thalamus"],
-                "Synthia": ["DLPFC_L", "dACC", "Striatum", "Insula_L"],
-                "Alexander": ["VTA", "OFC", "Amygdala_L", "Motor_L"],
-                "The Watcher": ["Precuneus", "DMN", "Thalamus", "V1"],
+                "Ethan": ["VMPFC", "Ant_Insula", "OFC", "Broca"],
+                "Synthia": ["DLPFC_L", "dACC", "Amygdala_L", "Striatum"],
+                "Alexander": ["VTA", "NucAcc", "EBA", "STG"],
+                "The Watcher": ["Thalamus", "Precuneus", "PCC", "V1"],
                 "Sleeper": ["Brainstem", "Thalamus", "Raphe", "PAG"],
-                "Rylee": ["SMA", "Cerebellum", "NucAcc", "Amygdala_R"],
-                "Payne": ["Amygdala_L", "PAG", "Insula_L", "PCC"],
-                "The Beginning": ["NucAcc", "Amygdala_L", "mPFC", "Hippo_L"],
-                "Elder Repression": ["DLPFC_L", "OFC", "Amygdala_L", "PCC"],
-                "Janet": ["DLPFC_R", "OFC", "Thalamus", "Striatum"],
-                "Danny": ["VTA", "Motor_L", "STG", "Amygdala_L"],
+                "Rylee": ["SMA", "Motor_L", "DLPFC_L", "Cerebellum"],
+                "Payne": ["PAG", "Amygdala_L", "Insula_L", "NucAcc"],
+                "The Beginning": ["Amygdala_L", "NucAcc", "mPFC", "VTA"],
+                "Elder Repression": ["sgACC", "DLPFC_L", "NucAcc", "OFC"],
+                "Janet": ["DLPFC_L", "DLPFC_R", "OFC", "Amygdala_L"],
+                "Danny": ["STG", "Motor_L", "NucAcc", "VTA"],
                 "The Mediator": ["ACC", "DLPFC_L", "Thalamus", "PCC"],
-                "Kyle": ["Amygdala_L", "sgACC", "OFC", "Somato"],
-                "Jabez": ["PAG", "Brainstem", "sgACC", "Amygdala_L"],
-                "Nikolai": ["SMA", "Cerebellum", "Striatum", "Thalamus"],
+                "Kyle": ["Amygdala_L", "Somato", "OFC", "Ant_Insula"],
+                "Jabez": ["VTA", "DMN", "Brainstem", "NucAcc"],
+                "Nikolai": ["Motor_L", "Insula_L", "SMA", "Cerebellum"],
                 "Vendilla": ["Precuneus", "PCC", "DMN", "V1"],
-                "Luke": ["Brainstem", "Raphe", "PAG", "Hippo_L"],
-                "Tom": ["OFC", "Ant_Insula", "ACC", "Hippo_L"],
-                "Thomas": ["Motor_L", "Hippo_L", "Cerebellum", "PCC"],
-                "Tanti": ["Striatum", "Motor_L", "DLPFC_R", "NucAcc"],
-                "Spencer": ["Wernicke", "NucAcc", "Ant_Insula", "OFC"],
-                "Sequoia": ["NucAcc", "VTA", "Raphe", "Amygdala_L"],
+                "Luke": ["Brainstem", "Raphe", "PAG", "Thalamus"],
+                "Tom": ["VMPFC", "Ant_Insula", "OFC", "Hippo_L"],
+                "Thomas": ["Cerebellum", "Motor_L", "Hippo_L", "STG"],
+                "Tanti": ["V1", "Motor_L", "SMA", "Striatum"],
+                "Spencer": ["STG", "Broca", "Ant_Insula", "NucAcc"],
+                "Sequoia": ["Amygdala_L", "NucAcc", "Somato", "VTA"],
                 "Zen Master Roshi": ["Broca", "STG", "NucAcc", "mPFC"],
-                "Future": ["DLPFC_L", "ACC", "Precuneus", "Thalamus"],
-                "Ms. Higgins": ["Amygdala_L", "OFC", "Ant_Insula", "VMPFC"],
-                "Keon": ["Precuneus", "Hippo_L", "DMN", "Broca"],
-                "Kane": ["Amygdala_R", "PAG", "DLPFC_R", "Thalamus"],
-                "Juan Carlos": ["Wernicke", "NucAcc", "Ant_Insula", "STG"],
-                "Joshua": ["Motor_L", "NucAcc", "DLPFC_L", "Thalamus"],
-                "John": ["Amygdala_R", "Brainstem", "DLPFC_R", "Locus_C"],
-                "Joey": ["PAG", "Motor_R", "Striatum", "Locus_C"],
-                "Jens": ["Amygdala_L", "Hippo_L", "sgACC", "Insula_L"],
-                "Jane Parker": ["OFC", "Ant_Insula", "VMPFC", "Olfactory"],
-                "Jameson": ["Motor_L", "Motor_R", "SMA", "Brainstem"],
-                "Ivan": ["DLPFC_L", "Precuneus", "Wernicke", "PCC"],
-                "Isabella": ["OFC", "EBA", "Ant_Insula", "DLPFC_L"],
-                "Hypnosis": ["PCC", "PAG", "Raphe", "Insula_L"],
-                "Hank": ["DLPFC_L", "ACC", "Striatum", "Motor_R"],
-                "Hans": ["V1", "OFC", "Somato", "NucAcc"],
-                "Dr. Gretchen": ["Broca", "Hippo_L", "Precuneus", "DLPFC_R"],
-                "Frank": ["VTA", "NucAcc", "Motor_L", "Broca"],
-                "Francois": ["Insula_L", "OFC", "Ant_Insula", "VMPFC"],
+                "Future": ["mPFC", "Hippo_L", "DLPFC_L", "Precuneus"],
+                "Ms. Higgins": ["Insula_L", "OFC", "Ant_Insula", "Somato"],
+                "Keon": ["Precuneus", "Hippo_L", "SPL", "V1"],
+                "Kane": ["Locus_C", "Amygdala_R", "SPL", "DLPFC_R"],
+                "Juan Carlos": ["Broca", "Wernicke", "ACC", "NucAcc"],
+                "Joshua": ["Motor_L", "Striatum", "NucAcc", "DLPFC_L"],
+                "John": ["DLPFC_R", "Amygdala_R", "Insula_L", "Motor_L"],
+                "Joey": ["Brainstem", "Motor_L", "Amygdala_L", "SMA"],
+                "Jens": ["DMN", "Motor_L", "Amygdala_L", "Hippo_L"],
+                "Jane Parker": ["STG", "OFC", "Ant_Insula", "Motor_L"],
+                "Jameson": ["Motor_L", "Motor_R", "Amygdala_L", "SMA"],
+                "Ivan": ["Hippo_L", "DLPFC_L", "Wernicke", "Precuneus"],
+                "Isabella": ["V1", "EBA", "NucAcc", "OFC"],
+                "Hypnosis": ["mPFC", "PCC", "Raphe", "Insula_L"],
+                "Hank": ["Motor_L", "DLPFC_L", "Insula_L", "SMA"],
+                "Hans": ["V1", "Amygdala_L", "OFC", "Somato"],
+                "Dr. Gretchen": ["DLPFC_L", "DLPFC_R", "Broca", "Amygdala_L"],
+                "Frank": ["OFC", "Amygdala_L", "VTA", "Broca"],
+                "Francois": ["Olfactory", "NucAcc", "Ant_Insula", "OFC"],
                 "Explorer": ["Precuneus", "PCC", "DMN", "SPL"],
-                "Enrique": ["Insula_L", "NucAcc", "VTA", "Ant_Insula"],
-                "Entertainer": ["Broca", "NucAcc", "STG", "Ant_Insula"],
-                "Ean": ["Amygdala_L", "sgACC", "PAG", "Raphe"],
-                "Duane": ["Broca", "Wernicke", "NucAcc", "Ant_Insula"],
-                "Duke Rutherford": ["DLPFC_L", "Precuneus", "Thalamus", "ACC"],
-                "Collin": ["Amygdala_L", "sgACC", "DLPFC_L", "Hippo_L"],
+                "Enrique": ["Somato", "Wernicke", "VTA", "Insula_L"],
+                "Entertainer": ["Broca", "Amygdala_L", "ACC", "NucAcc"],
+                "Ean": ["VTA", "V1", "sgACC", "Amygdala_L"],
+                "Duane": ["Motor_L", "Broca", "STG", "NucAcc"],
+                "Duke Rutherford": ["SPL", "Hippo_L", "DLPFC_L", "Precuneus"],
+                "Collin": ["Amygdala_L", "DMN", "Hippo_L", "sgACC"],
                 "Chogi Doshin": ["PCC", "DMN", "Insula_L", "ACC"],
-                "Cho": ["Broca", "Hippo_L", "DLPFC_L", "sgACC"],
-                "Charlie": ["Motor_L", "Striatum", "NucAcc", "DLPFC_L"],
-                "Charles": ["OFC", "DLPFC_L", "Precuneus", "ACC"],
-                "Calvin": ["PCC", "Precuneus", "Hippo_L", "V1"],
-                "Brock": ["SMA", "Cerebellum", "NucAcc", "Striatum"],
-                "Brenda": ["sgACC", "Amygdala_L", "PAG", "Insula_L"],
-                "Bobby": ["Insula_L", "PAG", "Raphe", "PCC"],
-                "Billy": ["sgACC", "OFC", "Insula_L", "Hippo_L"],
-                "Becs": ["V4", "EBA", "Hippo_L", "PCC"],
-                "Ario": ["Motor_L", "Cerebellum", "NucAcc", "Amygdala_L"],
-                "Anne Margarette": ["DLPFC_L", "OFC", "Striatum", "ACC"],
-                "Alexandru": ["Wernicke", "Hippo_L", "Insula_L", "V1"],
+                "Cho": ["Broca", "Wernicke", "mPFC", "DLPFC_L"],
+                "Charlie": ["Striatum", "NucAcc", "Motor_L", "DLPFC_L"],
+                "Charles": ["ACC", "OFC", "Insula_L", "DLPFC_L"],
+                "Calvin": ["DMN", "V1", "Hippo_L", "PCC"],
+                "Brock": ["Somato", "Motor_L", "SMA", "NucAcc"],
+                "Brenda": ["DLPFC_L", "Amygdala_L", "OFC", "NucAcc"],
+                "Bobby": ["VMPFC", "Motor_L", "Insula_L", "PCC"],
+                "Billy": ["Amygdala_L", "DLPFC_L", "OFC", "sgACC"],
+                "Becs": ["V1", "V4", "Amygdala_L", "Hippo_L"],
+                "Ario": ["Motor_L", "V1", "SMA", "Cerebellum"],
+                "Anne Margarette": ["DLPFC_L", "Striatum", "Amygdala_L", "OFC"],
+                "Alexandru": ["STG", "Wernicke", "DMN", "Hippo_L"],
                 "Abdul": ["Broca", "NucAcc", "mPFC", "STG"],
-                "A.B.S.": ["PAG", "Thalamus", "Motor_R", "Raphe"],
-                "Pierre": ["VTA", "STG", "Motor_L", "Broca"],
-                "Peter": ["Amygdala_R", "Motor_L", "NucAcc", "PAG"]
+                "A.B.S.": ["Cerebellum", "Motor_L", "Brainstem", "Thalamus"],
+                "Pierre": ["Striatum", "Motor_L", "VTA", "Broca"],
+                "Peter": ["Brainstem", "Amygdala_R", "NucAcc", "Locus_C"]
+            };
+
+            /* ═══ PER-ALTER VISUAL STYLE (from Neural Map.md) ═══ */
+            var STYLE = {
+                "Synthia": { fire: "sharp", density: 1.0, op: "bright" },
+                "Alexander": { fire: "smooth", density: 1.3, op: "bright" },
+                "Vendilla": { fire: "smooth", density: 0.7, op: "pulsing" },
+                "The Watcher": { fire: "static", density: 0.4, op: "dim" },
+                "Luke": { fire: "smooth", density: 0.6, op: "dim" },
+                "Tom": { fire: "smooth", density: 0.8, op: "bright" },
+                "Thomas": { fire: "rhythmic", density: 0.9, op: "pulsing" },
+                "The Beginning": { fire: "chaotic", density: 1.8, op: "bright" },
+                "Tanti": { fire: "sharp", density: 1.4, op: "bright" },
+                "Spencer": { fire: "smooth", density: 1.1, op: "bright" },
+                "Sleeper": { fire: "static", density: 0.3, op: "fading" },
+                "Sequoia": { fire: "smooth", density: 0.6, op: "dim" },
+                "Rylee": { fire: "chaotic", density: 1.5, op: "bright" },
+                "Zen Master Roshi": { fire: "chaotic", density: 1.2, op: "bright" },
+                "Elder Repression": { fire: "sharp", density: 1.0, op: "bright" },
+                "Payne": { fire: "static", density: 0.5, op: "fading" },
+                "Future": { fire: "smooth", density: 0.9, op: "bright" },
+                "Nikolai": { fire: "rhythmic", density: 1.0, op: "dim" },
+                "Ms. Higgins": { fire: "smooth", density: 0.8, op: "pulsing" },
+                "The Mediator": { fire: "smooth", density: 1.2, op: "bright" },
+                "Kyle": { fire: "chaotic", density: 1.1, op: "pulsing" },
+                "Keon": { fire: "sharp", density: 1.3, op: "bright" },
+                "Kane": { fire: "static", density: 0.7, op: "dim" },
+                "Juan Carlos": { fire: "chaotic", density: 1.4, op: "bright" },
+                "Joshua": { fire: "rhythmic", density: 1.0, op: "bright" },
+                "John": { fire: "static", density: 0.6, op: "dim" },
+                "Joey": { fire: "chaotic", density: 1.5, op: "bright" },
+                "Jens": { fire: "smooth", density: 0.5, op: "fading" },
+                "Janet": { fire: "sharp", density: 1.0, op: "bright" },
+                "Jane Parker": { fire: "smooth", density: 0.9, op: "pulsing" },
+                "Jameson": { fire: "rhythmic", density: 1.4, op: "bright" },
+                "Jabez": { fire: "static", density: 0.3, op: "fading" },
+                "Ivan": { fire: "sharp", density: 0.8, op: "dim" },
+                "Isabella": { fire: "sharp", density: 1.1, op: "bright" },
+                "Hypnosis": { fire: "smooth", density: 0.7, op: "pulsing" },
+                "Hank": { fire: "rhythmic", density: 0.8, op: "dim" },
+                "Hans": { fire: "sharp", density: 1.0, op: "bright" },
+                "Dr. Gretchen": { fire: "sharp", density: 1.0, op: "bright" },
+                "Frank": { fire: "chaotic", density: 1.3, op: "bright" },
+                "Francois": { fire: "smooth", density: 0.9, op: "pulsing" },
+                "Explorer": { fire: "smooth", density: 0.8, op: "dim" },
+                "Ethan": { fire: "smooth", density: 1.0, op: "dim" },
+                "Enrique": { fire: "smooth", density: 0.9, op: "pulsing" },
+                "Entertainer": { fire: "strobe", density: 1.5, op: "bright" },
+                "Ean": { fire: "loop", density: 0.8, op: "pulsing" },
+                "Duane": { fire: "chaotic", density: 1.2, op: "bright" },
+                "Duke Rutherford": { fire: "smooth", density: 0.7, op: "dim" },
+                "Danny": { fire: "strobe", density: 1.6, op: "bright" },
+                "Collin": { fire: "loop", density: 1.2, op: "pulsing" },
+                "Chogi Doshin": { fire: "smooth", density: 0.8, op: "pulsing" },
+                "Cho": { fire: "smooth", density: 0.6, op: "dim" },
+                "Charlie": { fire: "chaotic", density: 1.2, op: "bright" },
+                "Charles": { fire: "sharp", density: 0.8, op: "dim" },
+                "Calvin": { fire: "smooth", density: 0.7, op: "dim" },
+                "Brock": { fire: "rhythmic", density: 1.4, op: "bright" },
+                "Brenda": { fire: "smooth", density: 0.5, op: "fading" },
+                "Bobby": { fire: "smooth", density: 0.4, op: "fading" },
+                "Billy": { fire: "chaotic", density: 0.7, op: "pulsing" },
+                "Becs": { fire: "static", density: 0.7, op: "dim" },
+                "Ario": { fire: "rhythmic", density: 1.3, op: "bright" },
+                "Anne Margarette": { fire: "sharp", density: 1.0, op: "bright" },
+                "Alexandru": { fire: "smooth", density: 0.7, op: "pulsing" },
+                "Abdul": { fire: "chaotic", density: 1.4, op: "bright" },
+                "A.B.S.": { fire: "rhythmic", density: 0.6, op: "dim" },
+                "Pierre": { fire: "rhythmic", density: 1.2, op: "bright" },
+                "Peter": { fire: "chaotic", density: 1.0, op: "bright" }
             };
 
             // Scale ROI coordinates
@@ -1578,22 +1648,28 @@
 
             /* ═══ BRAIN VOLUME ═══ */
             function isInBrain(x, y, z) {
+                // Scaled ~25% larger to fill STL shell
                 var o = 0.4, dx = x - o, dy = y - 0.5, dz = z;
-                var iR = (dx * dx / 14.44 + dy * dy / 9 + dz * dz / 25) < 1;
-                var dl = x + o; var iL = (dl * dl / 14.44 + dy * dy / 9 + dz * dz / 25) < 1;
-                if (Math.abs(x) < 0.15 && y > 0.5) return false;
-                var tx = x - 2.8, ty = y + 1.5, tz = z - 0.5; var iTR = (tx * tx / 3.24 + ty * ty / 2.25 + tz * tz / 6.25) < 1;
-                var tl = x + 2.8; var iTL = (tl * tl / 3.24 + ty * ty / 2.25 + tz * tz / 6.25) < 1;
-                var cx = x, cy = y + 2, cz = z + 3; var iCb = (cx * cx / 16 + cy * cy / 2.25 + cz * cz / 4) < 1;
+                var iR = (dx * dx / 22 + dy * dy / 14 + dz * dz / 36) < 1;
+                var dl = x + o; var iL = (dl * dl / 22 + dy * dy / 14 + dz * dz / 36) < 1;
+                if (Math.abs(x) < 0.12 && y > 0.8) return false; // narrower fissure
+                var tx = x - 3.2, ty = y + 1.5, tz = z - 0.5; var iTR = (tx * tx / 5 + ty * ty / 3.5 + tz * tz / 9) < 1;
+                var tl = x + 3.2; var iTL = (tl * tl / 5 + ty * ty / 3.5 + tz * tz / 9) < 1;
+                var cx = x, cy = y + 2.2, cz = z + 3.5; var iCb = (cx * cx / 20 + cy * cy / 3.5 + cz * cz / 6) < 1;
                 var sx = x, a = -0.3, sy2 = y + 2.5, sz2 = z + 0.5;
                 var sy = sy2 * Math.cos(a) - sz2 * Math.sin(a); var sz = sy2 * Math.sin(a) + sz2 * Math.cos(a);
-                var iSt = (sx * sx + sz * sz) < 0.8 && sy > -3.5 && sy < 1;
+                var iSt = (sx * sx + sz * sz) < 1.2 && sy > -4 && sy < 1.2;
                 return iR || iL || iTR || iTL || iCb || iSt;
             }
 
-            // Point cloud
+            // Point cloud — surface-biased to fill toward shell edge
             var bg = new THREE.BufferGeometry(); var bp = [], bc = [];
-            for (var i = 0; i < 100000; i++) { var x = (Math.random() - 0.5) * 16, y = (Math.random() - 0.5) * 16, z = (Math.random() - 0.5) * 16; if (isInBrain(x, y, z)) { var n = Math.sin(x * 5) * Math.cos(y * 4) * Math.sin(z * 3.5); x += n * 0.06; y += n * 0.06; z += n * 0.06; bp.push(x, y, z); var d = (x * x + y * y + z * z) / 40, b = 1 - Math.min(d, 0.75), ry = (y + 6) / 12; bc.push(0.35 * b + ry * 0.15, 0.5 * b + ry * 0.1, 0.75 * b); } }
+            for (var i = 0; i < 120000; i++) {
+                var x = (Math.random() - 0.5) * 20, y = (Math.random() - 0.5) * 20, z = (Math.random() - 0.5) * 20;
+                // Surface bias: push 30% of points radially outward
+                if (Math.random() < 0.3) { var mag = Math.sqrt(x * x + y * y + z * z); if (mag > 0.1) { var push = 1 + Math.random() * 0.4; x *= push; y *= push; z *= push; } }
+                if (isInBrain(x, y, z)) { var n = Math.sin(x * 5) * Math.cos(y * 4) * Math.sin(z * 3.5); x += n * 0.06; y += n * 0.06; z += n * 0.06; bp.push(x, y, z); var d = (x * x + y * y + z * z) / 50, b = 1 - Math.min(d, 0.75), ry = (y + 7) / 14; bc.push(0.35 * b + ry * 0.15, 0.5 * b + ry * 0.1, 0.75 * b); }
+            }
             bg.setAttribute('position', new THREE.Float32BufferAttribute(bp, 3)); bg.setAttribute('color', new THREE.Float32BufferAttribute(bc, 3));
             var cloudMat = new THREE.PointsMaterial({ size: 0.05, vertexColors: true, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false });
             brainGroup.add(new THREE.Points(bg, cloudMat));
@@ -1918,17 +1994,19 @@
                 if (rank === 0) { ln = 400; sn = 24; gl = 1.4; op = 1; }
                 else if (rank === 1) { ln = 200; sn = 14; gl = 0.9; op = 1; }
                 else { ln = 100; sn = 6; gl = 0.6; op = Math.max(0.5, 1 - (rank - 1) * 0.06); }
-                // Per-alter style from clinical profile
-                var cln = d.cln || {};
-                var isExec = (d.str && d.str.exec >= 7);
-                var isEmotional = (cln.anxiety >= 6 || cln.shame >= 6);
-                var isDissoc = (cln.dissoc >= 7);
-                var isMotor = (d.str && d.str.physical >= 8);
+                // Per-alter style from Neural Map data
+                var sty = STYLE[name] || { fire: "smooth", density: 1.0, op: "bright" };
+                ln = Math.round(ln * sty.density);
+                if (sty.op === "dim") op *= 0.7;
+                if (sty.op === "fading") op *= 0.5;
                 var wanderAmt = 0.5, segLen = 0.55, branchProb = 0.15, gapProb = 0;
-                if (isExec) { wanderAmt = 0.3; segLen = 0.7; branchProb = 0.08; }
-                if (isEmotional) { wanderAmt = 0.8; segLen = 0.35; branchProb = 0.22; ln = Math.round(ln * 1.3); }
-                if (isDissoc) { wanderAmt = 0.4; segLen = 0.45; branchProb = 0.1; gapProb = 0.12; ln = Math.round(ln * 0.7); }
-                if (isMotor) { wanderAmt = 0.25; segLen = 0.65; branchProb = 0.06; }
+                if (sty.fire === "sharp") { wanderAmt = 0.2; segLen = 0.7; branchProb = 0.08; }
+                if (sty.fire === "smooth") { wanderAmt = 0.4; segLen = 0.6; branchProb = 0.12; }
+                if (sty.fire === "chaotic") { wanderAmt = 0.9; segLen = 0.35; branchProb = 0.25; }
+                if (sty.fire === "rhythmic") { wanderAmt = 0.3; segLen = 0.55; branchProb = 0.1; }
+                if (sty.fire === "static") { wanderAmt = 0.15; segLen = 0.8; branchProb = 0.04; ln = Math.round(ln * 0.5); }
+                if (sty.fire === "strobe") { wanderAmt = 0.7; segLen = 0.3; branchProb = 0.3; ln = Math.round(ln * 1.2); }
+                if (sty.fire === "loop") { wanderAmt = 0.6; segLen = 0.4; branchProb = 0.18; gapProb = 0.1; }
                 var hub = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 16), new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: op }));
                 hub.position.copy(pos);
                 hub.add(new THREE.Mesh(new THREE.SphereGeometry(gl, 16, 16), new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: op * 0.35, blending: THREE.AdditiveBlending })));
@@ -1960,6 +2038,10 @@
                             cur = cur.clone().add(dir.clone().multiplyScalar(segLen * 2)); lp = [cur.clone()]; continue;
                         }
                         var nx = cur.clone().add(dir.clone().multiplyScalar(segLen));
+                        // Clamp pathways to stay within brain volume
+                        var nDist = Math.sqrt(nx.x * nx.x + nx.y * nx.y + nx.z * nx.z);
+                        var maxR = maxROIRadius + 1.0;
+                        if (nDist > maxR) { nx.multiplyScalar(maxR / nDist); }
                         if (isInBrain(nx.x, nx.y, nx.z)) {
                             cur.copy(nx); lp.push(cur.clone());
                             if (!didBranch && s > 3 && Math.random() < branchProb) {

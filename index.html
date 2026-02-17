@@ -1617,8 +1617,8 @@
                 "Peter": { fire: "chaotic", density: 1.0, op: "bright" }
             };
 
-            // Scale ROI coordinates
-            var rk = Object.keys(ROI); for (var ri = 0; ri < rk.length; ri++) { var r = ROI[rk[ri]]; r.y *= 0.6; r.z *= 0.9; r.x *= 1.1; }
+            // Scale ROI coordinates — negate z (front-back) and x (left-right) to match STL orientation
+            var rk = Object.keys(ROI); for (var ri = 0; ri < rk.length; ri++) { var r = ROI[rk[ri]]; r.x *= -1.1; r.y *= 0.6; r.z *= -0.9; }
 
             // Compute bounding radius from all ROI positions (for adaptive shell scaling)
             var maxROIRadius = 0;

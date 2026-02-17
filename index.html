@@ -1646,26 +1646,29 @@
             var fl2 = new THREE.SpotLight(0x4400aa, 0.8); fl2.position.set(-30, -15, 20); scene.add(fl2);
             brainGroup = new THREE.Group(); scene.add(brainGroup);
 
-            /* ═══ BRAIN VOLUME ═══ */
+            /* ═══ BRAIN VOLUME — tighter fit to match STL shell ═══ */
             function isInBrain(x, y, z) {
-                // Scaled ~25% larger to fill STL shell
-                var o = 0.4, dx = x - o, dy = y - 0.5, dz = z;
-                var iR = (dx * dx / 22 + dy * dy / 14 + dz * dz / 36) < 1;
-                var dl = x + o; var iL = (dl * dl / 22 + dy * dy / 14 + dz * dz / 36) < 1;
-                if (Math.abs(x) < 0.12 && y > 0.8) return false; // narrower fissure
-                var tx = x - 3.2, ty = y + 1.5, tz = z - 0.5; var iTR = (tx * tx / 5 + ty * ty / 3.5 + tz * tz / 9) < 1;
-                var tl = x + 3.2; var iTL = (tl * tl / 5 + ty * ty / 3.5 + tz * tz / 9) < 1;
-                var cx = x, cy = y + 2.2, cz = z + 3.5; var iCb = (cx * cx / 20 + cy * cy / 3.5 + cz * cz / 6) < 1;
-                var sx = x, a = -0.3, sy2 = y + 2.5, sz2 = z + 0.5;
+                // Main hemispheres (tighter)
+                var o = 0.3, dx = x - o, dy = y - 0.3, dz = z;
+                var iR = (dx * dx / 14 + dy * dy / 9 + dz * dz / 22) < 1;
+                var dl = x + o; var iL = (dl * dl / 14 + dy * dy / 9 + dz * dz / 22) < 1;
+                if (Math.abs(x) < 0.1 && y > 0.6) return false; // fissure
+                // Temporal lobes (smaller)
+                var tx = x - 2.5, ty = y + 1.2, tz = z - 0.3; var iTR = (tx * tx / 3 + ty * ty / 2.5 + tz * tz / 6) < 1;
+                var tl = x + 2.5; var iTL = (tl * tl / 3 + ty * ty / 2.5 + tz * tz / 6) < 1;
+                // Cerebellum (compact)
+                var cx2 = x, cy2 = y + 1.8, cz2 = z + 2.8; var iCb = (cx2 * cx2 / 8 + cy2 * cy2 / 2 + cz2 * cz2 / 3) < 1;
+                // Brainstem (short & narrow)
+                var sx = x, a = -0.25, sy2 = y + 2.0, sz2 = z + 0.3;
                 var sy = sy2 * Math.cos(a) - sz2 * Math.sin(a); var sz = sy2 * Math.sin(a) + sz2 * Math.cos(a);
-                var iSt = (sx * sx + sz * sz) < 1.2 && sy > -4 && sy < 1.2;
+                var iSt = (sx * sx + sz * sz) < 0.8 && sy > -2.5 && sy < 1.0;
                 return iR || iL || iTR || iTL || iCb || iSt;
             }
 
             // Point cloud — surface-biased to fill toward shell edge
             var bg = new THREE.BufferGeometry(); var bp = [], bc = [];
             for (var i = 0; i < 120000; i++) {
-                var x = (Math.random() - 0.5) * 20, y = (Math.random() - 0.5) * 20, z = (Math.random() - 0.5) * 20;
+                var x = (Math.random() - 0.5) * 14, y = (Math.random() - 0.5) * 12, z = (Math.random() - 0.5) * 14;
                 // Surface bias: push 30% of points radially outward
                 if (Math.random() < 0.3) { var mag = Math.sqrt(x * x + y * y + z * z); if (mag > 0.1) { var push = 1 + Math.random() * 0.4; x *= push; y *= push; z *= push; } }
                 if (isInBrain(x, y, z)) { var n = Math.sin(x * 5) * Math.cos(y * 4) * Math.sin(z * 3.5); x += n * 0.06; y += n * 0.06; z += n * 0.06; bp.push(x, y, z); var d = (x * x + y * y + z * z) / 50, b = 1 - Math.min(d, 0.75), ry = (y + 7) / 14; bc.push(0.35 * b + ry * 0.15, 0.5 * b + ry * 0.1, 0.75 * b); }
@@ -2038,10 +2041,9 @@
                             cur = cur.clone().add(dir.clone().multiplyScalar(segLen * 2)); lp = [cur.clone()]; continue;
                         }
                         var nx = cur.clone().add(dir.clone().multiplyScalar(segLen));
-                        // Clamp pathways to stay within brain volume
-                        var nDist = Math.sqrt(nx.x * nx.x + nx.y * nx.y + nx.z * nx.z);
-                        var maxR = maxROIRadius + 1.0;
-                        if (nDist > maxR) { nx.multiplyScalar(maxR / nDist); }
+                        // Clamp pathways to stay within brain volume (ellipsoid clamp)
+                        var nDist = Math.sqrt(nx.x * nx.x / 16 + nx.y * nx.y / 10 + nx.z * nx.z / 24);
+                        if (nDist > 1.0) { var sc = 0.98 / nDist; nx.multiplyScalar(sc); }
                         if (isInBrain(nx.x, nx.y, nx.z)) {
                             cur.copy(nx); lp.push(cur.clone());
                             if (!didBranch && s > 3 && Math.random() < branchProb) {

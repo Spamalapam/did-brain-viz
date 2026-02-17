@@ -1646,8 +1646,8 @@
             var fl2 = new THREE.SpotLight(0x4400aa, 0.8); fl2.position.set(-30, -15, 20); scene.add(fl2);
             brainGroup = new THREE.Group(); scene.add(brainGroup);
 
-            /* ═══ BRAIN VOLUME — balanced fit to STL shell ═══ */
-            function isInBrain(x, y, z) {
+            /* ═══ BRAIN VOLUME — balanced fit to STL shell (overridden by STL radial map when loaded) ═══ */
+            var isInBrain = function (x, y, z) {
                 // Main hemispheres (balanced between tight/loose)
                 var o = 0.35, dx = x - o, dy = y - 0.4, dz = z;
                 var iR = (dx * dx / 18 + dy * dy / 11 + dz * dz / 28) < 1;
@@ -1663,7 +1663,7 @@
                 var sy = sy2 * Math.cos(a) - sz2 * Math.sin(a); var sz = sy2 * Math.sin(a) + sz2 * Math.cos(a);
                 var iSt = (sx * sx + sz * sz) < 1.0 && sy > -3.0 && sy < 1.0;
                 return iR || iL || iTR || iTL || iCb || iSt;
-            }
+            };
 
             // Point cloud — surface-biased to fill toward shell edge
             var bg = new THREE.BufferGeometry(); var bp = [], bc = [];
@@ -1790,6 +1790,58 @@
                 bg2.setAttribute('color', new THREE.Float32BufferAttribute(bc2, 3));
                 cloudMesh = new THREE.Points(bg2, cloudMat);
                 brainGroup.add(cloudMesh);
+
+                // ═══ Build radial distance map for brain-shaped containment ═══
+                var RMAP_RES = 64;
+                var radialMap = new Float32Array(RMAP_RES * RMAP_RES);
+                for (var rmi = 0; rmi < vertCount; rmi++) {
+                    var rvx = verts[rmi * 3], rvy = verts[rmi * 3 + 1], rvz = verts[rmi * 3 + 2];
+                    var rdist = Math.sqrt(rvx * rvx + rvy * rvy + rvz * rvz);
+                    if (rdist < 0.01) continue;
+                    var rtheta = Math.atan2(rvz, rvx); // -PI to PI
+                    var rphi = Math.acos(Math.max(-1, Math.min(1, rvy / rdist))); // 0 to PI
+                    var rti = Math.min(Math.floor((rtheta + Math.PI) / (2 * Math.PI) * RMAP_RES), RMAP_RES - 1);
+                    var rpi = Math.min(Math.floor(rphi / Math.PI * RMAP_RES), RMAP_RES - 1);
+                    var rmIdx = rpi * RMAP_RES + rti;
+                    if (rdist > radialMap[rmIdx]) radialMap[rmIdx] = rdist;
+                }
+                // Smooth pass: fill empty bins from neighbors
+                for (var sp = 0; sp < 3; sp++) {
+                    var rmCopy = new Float32Array(radialMap);
+                    for (var spi = 0; spi < RMAP_RES; spi++) {
+                        for (var spj = 0; spj < RMAP_RES; spj++) {
+                            var sIdx = spi * RMAP_RES + spj;
+                            if (rmCopy[sIdx] > 0) continue;
+                            var sum = 0, cnt = 0;
+                            for (var di = -1; di <= 1; di++) {
+                                for (var dj = -1; dj <= 1; dj++) {
+                                    var ni = (spi + di + RMAP_RES) % RMAP_RES;
+                                    var nj = (spj + dj + RMAP_RES) % RMAP_RES;
+                                    var nv = rmCopy[ni * RMAP_RES + nj];
+                                    if (nv > 0) { sum += nv; cnt++; }
+                                }
+                            }
+                            if (cnt > 0) radialMap[sIdx] = sum / cnt;
+                        }
+                    }
+                }
+
+                // Override isInBrain to use STL radial map
+                isInBrain = function (x, y, z) {
+                    var d2 = Math.sqrt(x * x + y * y + z * z);
+                    if (d2 < 0.01) return true;
+                    var th = Math.atan2(z, x);
+                    var ph = Math.acos(Math.max(-1, Math.min(1, y / d2)));
+                    var ti2 = Math.min(Math.floor((th + Math.PI) / (2 * Math.PI) * RMAP_RES), RMAP_RES - 1);
+                    var pi2 = Math.min(Math.floor(ph / Math.PI * RMAP_RES), RMAP_RES - 1);
+                    var maxSurf = radialMap[pi2 * RMAP_RES + ti2];
+                    return maxSurf > 0 && d2 < maxSurf * 0.92;
+                };
+
+                // Rebuild active alters so pathways use new containment
+                if (typeof rebuild === 'function' && activeAlters.length > 0) {
+                    rebuild();
+                }
             }
 
             // File input + drag-and-drop

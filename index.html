@@ -1675,7 +1675,8 @@
             }
             bg.setAttribute('position', new THREE.Float32BufferAttribute(bp, 3)); bg.setAttribute('color', new THREE.Float32BufferAttribute(bc, 3));
             var cloudMat = new THREE.PointsMaterial({ size: 0.05, vertexColors: true, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false });
-            brainGroup.add(new THREE.Points(bg, cloudMat));
+            var cloudMesh = new THREE.Points(bg, cloudMat);
+            brainGroup.add(cloudMesh);
 
             /* ═══ TRANSPARENT BRAIN SHELL (STL LOADER) ═══ */
             var brainShellGroup = new THREE.Group();
@@ -1755,6 +1756,40 @@
 
                 // Update status
                 document.getElementById('vp-bl').innerText = 'STL loaded (' + (geometry.attributes.position.count / 3 | 0) + ' tris)';
+
+                // ═══ Regenerate point cloud from STL vertices (brain-shaped) ═══
+                var verts = geometry.attributes.position.array;
+                var norms = geometry.attributes.normal ? geometry.attributes.normal.array : null;
+                var vertCount = verts.length / 3;
+                var bp2 = [], bc2 = [];
+                var targetPts = 80000;
+                // Sample vertices with replacement, scatter inward
+                for (var pi = 0; pi < targetPts; pi++) {
+                    var vi = Math.floor(Math.random() * vertCount) * 3;
+                    var vx = verts[vi], vy = verts[vi + 1], vz = verts[vi + 2];
+                    // Scatter inward: depth 0 = surface, 1 = center
+                    // Surface bias: 40% of points in outer 20% depth
+                    var depth = Math.random() < 0.4 ? Math.random() * 0.2 : Math.random() * 0.9;
+                    var px = vx * (1 - depth), py = vy * (1 - depth), pz = vz * (1 - depth);
+                    // Add slight random jitter for organic feel
+                    var jit = 0.15;
+                    px += (Math.random() - 0.5) * jit;
+                    py += (Math.random() - 0.5) * jit;
+                    pz += (Math.random() - 0.5) * jit;
+                    bp2.push(px, py, pz);
+                    // Color: blueish-white, darker toward center
+                    var dist = Math.sqrt(px * px + py * py + pz * pz);
+                    var bright = 0.3 + 0.7 * (1 - depth);
+                    var ry2 = (py + 5) / 10;
+                    bc2.push(0.35 * bright + ry2 * 0.15, 0.5 * bright + ry2 * 0.1, 0.75 * bright);
+                }
+                // Replace old cloud
+                brainGroup.remove(cloudMesh);
+                var bg2 = new THREE.BufferGeometry();
+                bg2.setAttribute('position', new THREE.Float32BufferAttribute(bp2, 3));
+                bg2.setAttribute('color', new THREE.Float32BufferAttribute(bc2, 3));
+                cloudMesh = new THREE.Points(bg2, cloudMat);
+                brainGroup.add(cloudMesh);
             }
 
             // File input + drag-and-drop

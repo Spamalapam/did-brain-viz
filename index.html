@@ -952,13 +952,14 @@
     <script>window.onerror = function (m, u, l) { var e = document.getElementById('error-display'); if (e) { e.style.display = 'block'; e.innerHTML += '<div>' + m + ' (L' + l + ')</div>'; } };</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <script>
         (function () {
             "use strict";
             if (typeof THREE === 'undefined') { document.getElementById('error-display').style.display = 'block'; document.getElementById('error-display').innerHTML = 'Three.js failed to load.'; return; }
 
             /* ═══ STL URL — update after uploading to GitHub Releases ═══ */
-            var STL_URL = 'https://github.com/USER/REPO/releases/download/v1.0/brain_final.stl';
+            var STL_URL = 'https://github.com/USER/REPO/releases/download/v1.0/brain_final.stl.gz';
 
             /* ═══════════════════════════════════════════
                ROI COORDINATES
@@ -1661,7 +1662,14 @@
                 xhr.onload = function () {
                     if (xhr.status === 200) {
                         loadBar.style.width = '100%';
-                        try { loadSTLGeometry(xhr.response); } catch (err) {
+                        try {
+                            var buf = xhr.response;
+                            // Decompress if gzipped
+                            if (STL_URL.indexOf('.gz') === STL_URL.length - 3 && typeof pako !== 'undefined') {
+                                buf = pako.inflate(new Uint8Array(buf)).buffer;
+                            }
+                            loadSTLGeometry(buf);
+                        } catch (err) {
                             document.getElementById('error-display').style.display = 'block';
                             document.getElementById('error-display').innerHTML = 'STL Parse Error: ' + err.message;
                         }

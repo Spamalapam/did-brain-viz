@@ -860,18 +860,106 @@
 
             #viewport {
                 width: 100%;
-                height: 40vh;
-                min-height: 220px;
+                height: 55vh;
+                min-height: 250px;
                 flex: none;
             }
 
             #hud {
                 width: 100%;
                 min-width: 100%;
-                height: 60vh;
+                height: 45vh;
                 flex: none;
                 border-left: none;
                 border-top: 1px solid rgba(255, 255, 255, 0.06);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #hud-header {
+                font-size: 12px;
+                padding: 6px 8px;
+            }
+
+            .search-bar input[type=text] {
+                font-size: 16px;
+                /* prevents iOS zoom on focus */
+            }
+
+            .vp-label {
+                font-size: 9px;
+                padding: 3px 6px;
+            }
+
+            .vp-btn {
+                font-size: 10px;
+                padding: 4px 8px;
+                min-height: 32px;
+            }
+
+            .brightness-controls {
+                flex-direction: column;
+                gap: 4px;
+                padding: 4px 6px;
+                bottom: 4px;
+                right: 4px;
+            }
+
+            .bright-slider {
+                width: 60px;
+                height: 20px;
+            }
+
+            .bright-label,
+            .bright-val {
+                font-size: 9px;
+            }
+
+            .alter-tag {
+                padding: 3px 6px;
+                font-size: 10px;
+                margin: 2px;
+            }
+
+            .bio-panel {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: 100vh;
+                z-index: 100;
+                border-radius: 0;
+                overflow-y: auto;
+            }
+
+            .bio-panel .bio-close {
+                font-size: 20px;
+                padding: 8px;
+            }
+
+            .score-bar {
+                height: 10px;
+            }
+
+            #console {
+                font-size: 10px;
+                max-height: 100px;
+            }
+
+            #neural-readout {
+                font-size: 10px;
+            }
+
+            .sys-bar-wrap {
+                height: 6px;
+            }
+
+            .sys-label,
+            .sys-pct {
+                font-size: 9px;
             }
         }
     </style>
